@@ -1,0 +1,34 @@
+0001 0000                                            ORG     $0000	; el signo $ es para hexadecimal
+0002 0000                    contador                rmb     1
+0003 0001                    resultado               rmb     3
+0004 0004                    op1                     rmb     2
+0005 0006                    op2                     rmb     2
+0006                         
+0007                                                 
+0008 8000                                            ORG    $8000	; Ahora sumaremos dos numeros de 16
+0009                         * de 16 bits, aprovechando el registro indice IX para sumar de a 8 bits
+0010                                                 
+0011 8000 7f 00 01                                   clr     resultado	; HHresultado = 0
+0012 8003 c6 02                                      ldab    #$2		
+0013                         * el # indica modo Inmediato B <- 2 (hexadecimal)
+0014 8005 ce 00 03                                   ldx     #resultado+2	; carga el registro IX
+0015                         * con la direccion de resultado mas dos (Lresultado)
+0016 8008 0c                                         clc			; Carry = 0
+0017                         loop                        
+0018 8009 a6 02                                      ldaa    2,x		; A = *(IX+2) (contenido de IX+2)
+0019 800b a9 04                                      adca    4,x		; A+= *(IX+4) 
+0020 800d a7 00                                      staa    0,x		; direccion de IX <- A
+0021 800f 09                                         dex			; IX--
+0022 8010 5a                                         decb			; B--
+0023 8011 26 f6                                      bne     loop		; si B<>0 vuelve a loop
+0024 8013 24 03                                      bcc     sale		; si B=0 y si Carry=0, sale
+0025 8015 7c 00 01                                   inc     resultado	; si Carry=1 HHresultado++
+0026                         sale                    
+0027 8018 20 fe                                      bra     sale            ; fin del programa. while(1)
+0028                                                 
+0029                                                 
+0030                                                 
+0031                                                 
+0032                                                 
+0033                                                 
+0034                                                 

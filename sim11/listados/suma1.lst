@@ -1,0 +1,22 @@
+0001 0000                                            ORG     $0000	; los datos los dejamos al principio
+0002 0000                    contador                rmb     1	; desde la posicion 0000
+0003 0001                    resultado               rmb     3	; observar que el resultado es de 3
+0004 0004                    op1                     rmb     2	; bytes (24 bits) para soportar
+0005 0006                    op2                     rmb     2	; los 17 bits del resultado
+0006                         
+0007                         
+0008 8000                                            ORG     $8000 	; a partir de aqui va el codigo 
+0009                         inicio
+0010 8000 7f 00 01                                   clr     resultado	; limpiamos la parte alta (H)
+0011 8003 96 05                                      ldaa    op1+1		; cargamos la parte baja (L)
+0012 8005 9b 07                                      adda    op2+1		; sumamos Lop2 
+0013 8007 97 03                                      staa    resultado+2	; guarda en L de resultado
+0014 8009 96 04                                      ldaa    op1		; carga Hop1
+0015 800b 99 06                                      adca    op2		; suma con carry Hop2
+0016 800d 97 02                                      staa    resultado+1	; guarda en HL resultado
+0017 800f 24 03                                      bcc     sale		; si no hay carry, se va
+0018 8011 7c 00 01                                   inc     resultado	; else HHresultado=1
+0019                         sale                    
+0020 8014 20 fe                                      bra     sale		; terminamos
+0021                                                 
+0022                                                 

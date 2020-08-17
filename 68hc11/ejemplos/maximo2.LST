@@ -1,0 +1,91 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+                           ORG     $0015
+                   vector  RMB     &20     ; Declara un vector de 20 bytes
+                   max     RMB     &2      ; Variable donde guarda el maximo
+                   tam     EQU     &18     ; Variable donde guarda el tamao
+
+  002B 7F 00 15            CLR     vector  ; Inicializa vector
+
+  002E 8D 23               BSR     cargvec ; Carga el vector con valores
+.                  asignados
+
+  0030 CE 00 15            LDX     #vector ; Posiciona el indice en el inicio
+.                  del vector
+
+  0033 EC 00               LDD     0,X
+  0035 8D 17               BSR     strmax  ; Guarda el 1er elemento en max.
+
+  0037 EC 00       for     LDD     0,X     ; Carga posicin indicada por el
+.                  indice
+  0039 1A 93 29            CPD     max     ; Compara con el mximo  D - max
+  003C 2E 0B               BGT     setmax  ; si D > max => D - max > 0
+                   sigue
+  003E 08                  INX             ; Por ser variables de 2bytes,
+.                  incremento 2 posiciones IX
+  003F 08                  INX
+  0040 8C 00 27            CPX     #vector+tam
+  0043 26 F2               BNE     for
+
+  0045 DC 29               LDD     max
+  0047 20 FE               BRA     *
+
+  0049 DD 29       setmax  STD     max
+  004B 7E 00 3E            JMP     sigue
+                   ********************
+
+                   strmax
+  004E EC 00               LDD     0,X
+  0050 DD 29               STD     max
+  0052 39                  RTS
+
+                   ********************
+                   cargvec
+  0053 CE 00 15            LDX     #vector
+
+  0056 CC 00 35            LDD     #&53
+  0059 ED 00               STD     0,X
+
+  005B CC 05 31            LDD     #&1329
+  005E ED 02               STD     2,X
+
+  0060 CC 02 6D            LDD     #&621
+  0063 ED 04               STD     4,X
+
+  0065 CC 02 F1            LDD     #&753
+  0068 ED 06               STD     6,X
+
+  006A CC 00 0B            LDD     #&11
+  006D ED 08               STD     8,X
+
+  006F CC 03 5F            LDD     #&863
+  0072 ED 0A               STD     10,X
+
+  0074 CC 18 C4            LDD     #&6340
+  0077 ED 0C               STD     12,X
+
+  0079 CC 0C 59            LDD     #&3161
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       2
+
+  007C ED 0E               STD     14,X
+
+  007E CC 00 E6            LDD     #&230
+  0081 ED 10               STD     16,X
+
+  0083 CC 00 A0            LDD     #&160
+  0086 ED 12               STD     18,X
+
+  0088 39                  RTS
+                   ********************
+                           END
+
+  Symbol Table 
+
+  SETMAX             0049
+  FOR                0037
+  STRMAX             004E
+  VECTOR             0015
+  MAX                0029
+  CARGVEC            0053
+  TAM                0012
+  SIGUE              003E

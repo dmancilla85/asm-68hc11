@@ -1,0 +1,29 @@
+  ADDR B1 B2 B3 B4 C:\Proyectos\assembler\test7Segments.asm         PAGE       1
+
+
+                           ORG     $000
+
+  0000 86 FF               LDAA    #$FF
+  0002 B7 10 04            STAA    $1004
+
+  0005 8D 08       move    BSR     timer
+  0007 4A                  DECA
+  0008 B7 10 04            STAA    $1004
+  000B 26 F8               BNE     move
+  000D 20 FE               BRA     *
+
+                   timer
+  000F 18 CE 00 FF         LDY #$FF        ; Realizar una pausa
+                   dec
+  0013 18 09               DEY
+  0015 18 8C 00 00         CPY #0
+  0019 26 F8               BNE dec
+  001B 39                  RTS
+
+                           END
+
+  Symbol Table 
+
+  MOVE               0005
+  TIMER              000F
+  DEC                0013

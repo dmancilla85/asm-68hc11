@@ -1,0 +1,133 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+
+                           ORG     $0000
+                   vector  RMB     &20             ;Vector de 10 palabras de
+.                  2bytes
+                   max     RMB     &2              ;Variable donde guardo el
+.                  mximo
+                   tam     EQU     &20
+
+  0016 8D 25               BSR     initvec         ;Inicializo el vector
+  0018 8D 33               BSR     cargavec        ;Carga el vector
+
+  001A CE 00 00            LDX     #vector         ;Coloco IX en el inicio del
+.                  vector
+  001D EC 00               LDD     0,x
+  001F 8D 17               BSR     strmax          ;Guarda el 1 elemento en
+.                  "max"
+
+  0021 EC 00       for     LDD     0,x
+  0023 1A 93 14            CPD     max
+  0026 2E 0B               BGT     setmax          ;Si D > max  --> max = D
+
+  0028 08          sigue   INX
+  0029 08                  INX
+  002A 8C 00 14            CPX     #vector+tam
+  002D 26 F2               BNE     for
+
+  002F DC 14               LDD     max             ;Muestra el mximo en D
+  0031 20 FE               BRA     *
+
+
+                   **************************
+
+  0033 DD 14       setmax  STD     max             ;Almaceno en max
+  0035 7E 00 28            JMP     sigue
+
+
+                   **************************
+
+                   strmax
+  0038 EC 00               LDD     0,x
+  003A DD 14               STD     max
+  003C 39                  RTS
+
+
+                   **************************
+
+                   initvec
+  003D CE 00 00            LDX     #vector
+  0040 CC 00 00            LDD     #&0
+  0043 ED 00       loop    STD     0,x
+  0045 08                  INX
+  0046 08                  INX
+  0047 8C 00 14            CPX     #vector+tam
+  004A 26 F7               BNE     loop
+  004C 39                  RTS
+
+
+                   **************************
+
+                   cargavec
+  004D CE 00 00            LDX     #vector
+  0050 CC 75 65            LDD     #&30053         ;fila 1
+  0053 ED 00               STD     0,x
+  0055 08                  INX
+  0056 08                  INX
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       2
+
+
+  0057 CC 14 5D            LDD     #&5213          ;fila 2
+  005A ED 00               STD     0,x
+  005C 08                  INX
+  005D 08                  INX
+
+  005E CC 04 67            LDD     #&1127          ;fila 3
+  0061 ED 00               STD     0,x
+  0063 08                  INX
+  0064 08                  INX
+
+  0065 CC 00 09            LDD     #&9             ;fila 4
+  0068 ED 00               STD     0,x
+  006A 08                  INX
+  006B 08                  INX
+
+  006C CC 31 BC            LDD     #&12732         ;fila 5
+  006F ED 00               STD     0,x
+  0071 08                  INX
+  0072 08                  INX
+
+  0073 CC 02 3E            LDD     #&574           ;fila 6
+  0076 ED 00               STD     0,x
+  0078 08                  INX
+  0079 08                  INX
+
+  007A CC 00 71            LDD     #&113           ;fila 7
+  007D ED 00               STD     0,x
+  007F 08                  INX
+  0080 08                  INX
+
+  0081 CC 04 02            LDD     #&1026          ;fila 8
+  0084 ED 00               STD     0,x
+  0086 08                  INX
+  0087 08                  INX
+
+  0088 CC 25 95            LDD     #&9621          ;fila 9
+  008B ED 00               STD     0,x
+  008D 08                  INX
+  008E 08                  INX
+
+  008F CC 52 B4            LDD     #&21172         ;fila 10
+  0092 ED 00               STD     0,x
+
+  0094 4F                  CLRA
+  0095 5F                  CLRB
+
+  0096 39                  RTS
+                   **************************
+                   END
+
+  Symbol Table 
+
+  SETMAX             0033
+  FOR                0021
+  CARGAVEC           004D
+  STRMAX             0038
+  VECTOR             0000
+  MAX                0014
+  END                0097
+  INITVEC            003D
+  TAM                0014
+  SIGUE              0028
+  LOOP               0043

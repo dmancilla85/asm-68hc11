@@ -1,0 +1,120 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+
+                           ORG $000
+
+
+                   tam     EQU     &20
+                   vector  RMB     tam
+                   aux     RMB     &2
+                   k       RMB     &1
+                   final   RMB     &2
+
+  0019 7F 00 00            CLR     vector
+  001C 7E 00 5D            JMP     carga
+
+  001F CE 00 00    inicio  LDX     #vector
+  0022 18 CE 00 14         LDY     #vector+tam
+  0026 18 DF 17            STY     final
+
+  0029 86 00       while1  LDAA    #&0     ; Estado de cambio (k) en 0
+  002B 97 16               STAA    k
+
+  002D 18 CE 00 00 while2  LDY     #vector
+  0031 18 EC 00    cond1   LDD     0,y     ; Carga posicin del vector
+  0034 CD A3 02            CPD     2,y     ; Compara con el siguiente
+  0037 2E 5C               BGT     cambia
+                   cambgo
+  0039 18 08               INY
+  003B 18 08               INY
+  003D 18 9C 17    cond2   CPY     final
+  0040 26 EF               BNE     cond1
+
+  0042 86 00               LDAA    #0
+  0044 91 16               CMPA    k
+  0046 26 00               BNE     go
+
+                   go
+  0048 08          sigue   INX             ; Incremento dos posiciones de
+.                  memoria
+  0049 08                  INX
+  004A 9C 17               CPX     final
+  004C 26 DB               BNE     while1
+
+  004E 18 DE 17            LDY     final
+  0051 18 EC 00            LDD     0,y
+  0054 20 FE               BRA     *
+  0056 CE 00 00            LDX     #vector
+  0059 EC 08               LDD     8,x
+  005B 20 FE               BRA     *
+
+                   *******************
+  005D CE 00 00    carga   LDX     #vector
+
+  0060 CC 00 0C            LDD     #&12
+  0063 ED 00               STD     0,x
+
+  0065 CC 00 12            LDD     #&18
+  0068 ED 02               STD     2,x
+
+  006A CC 00 68            LDD     #&104
+  006D ED 04               STD     4,x
+
+  006F CC 00 06            LDD     #&6
+  0072 ED 06               STD     6,x
+
+  0074 CC 00 63            LDD     #&99
+  0077 ED 08               STD     8,x
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       2
+
+
+  0079 CC 00 20            LDD     #&32
+  007C ED 0A               STD     10,x
+
+  007E CC 00 01            LDD     #&1
+  0081 ED 0C               STD     12,x
+
+  0083 CC 00 3F            LDD     #&63
+  0086 ED 0E               STD     14,x
+
+  0088 CC 00 75            LDD     #&117
+  008B ED 10               STD     16,x
+
+  008D CC 00 37            LDD     #&55
+  0090 ED 12               STD     18,x
+
+  0092 7E 00 1F            JMP     inicio
+
+                   ********************
+                   cambia
+  0095 DD 14               STD     aux     ; Guarda posicin actual en "aux"
+  0097 18 EC 02            LDD     2,y     ; Lee siguiente posicin
+  009A 18 ED 00            STD     0,y     ; Guarda siguiente en posicin actual
+  009D DC 14               LDD     aux
+  009F 18 ED 02            STD     2,y     ; Guarda en siguiente posicin
+.                  contenido actual
+  00A2 86 01               LDAA    #&1
+  00A4 97 16               STAA    k
+  00A6 7E 00 39            JMP     cambgo
+
+                   ********************
+                   END
+
+  Symbol Table 
+
+  CARGA              005D
+  K                  0016
+  GO                 0048
+  CAMBGO             0039
+  COND1              0031
+  COND2              003D
+  CAMBIA             0095
+  VECTOR             0000
+  WHILE1             0029
+  WHILE2             002D
+  END                00A9
+  TAM                0014
+  FINAL              0017
+  AUX                0014
+  SIGUE              0048
+  INICIO             001F

@@ -1,0 +1,124 @@
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       1
+
+
+                           ORG     $0000
+
+                   vector  RMB     &20
+                   ceros   RMB     &1
+                   multis  RMB     &1
+                   cant    EQU     &20
+                   diviso  RMB     &2
+
+  0018 8D 2E               BSR     inicio
+  001A 8D 4E               BSR     cargavec
+
+  001C 18 CE 00 00         LDY     #vector
+  0020 CE 00 16            LDX     #diviso
+
+  0023 18 EC 00    loop    LDD     0,y ; CORREGIRRRR
+  0026 1A 83 00 00         CPD     #&0
+  002A 27 28               BEQ     cero
+
+  002C CE 00 04    div     LDX     #$4
+  002F 03                  FDIV
+  0030 1A 83 00 00         CPD     #&0
+  0034 27 29               BEQ     esmulti
+
+  0036 18 08       inc     INY
+  0038 18 08               INY
+  003A 18 8C 00 14         CPY     #vector+cant
+  003E 26 E3               BNE     loop
+  0040 20 FE               bra *
+
+  0042 96 15               LDAA    multis
+  0044 D6 14               LDAB    ceros
+  0046 20 FE               bra     *
+
+
+                   ****************************
+
+                   inicio
+  0048 86 00               LDAA    #&0
+  004A 97 14               STAA    ceros
+  004C 97 15               STAA    multis
+
+  004E CC 00 04            LDD     #&4
+  0051 DD 16               STD     diviso
+  0053 39                  RTS
+                   ****************************
+
+                   cero
+  0054 96 14               LDAA    ceros
+  0056 4C                  INCA
+  0057 97 14               STAA    ceros
+  0059 18 EC 00            LDD     0,y
+  005C 7E 00 2C            JMP     div
+                   ****************************
+
+                   esmulti
+  005F 96 15               LDAA    multis
+  0061 4C                  INCA
+  0062 97 15               STAA    multis
+  0064 CD EE 00            LDX     0,y
+  0067 7E 00 36            JMP     inc
+                   ****************************
+
+                   cargavec
+  006A CE 00 00            LDX     #vector
+  ADDR B1 B2 B3 B4 thrass11.tmp                                     PAGE       2
+
+  006D CC 00 24            LDD     #&36            ;fila 1
+  0070 ED 00               STD     0,x
+
+  0072 CC 00 35            LDD     #&53            ;fila 2
+  0075 ED 02               STD     2,x
+
+  0077 CC 00 0B            LDD     #&11            ;fila 3
+  007A ED 04               STD     4,x
+
+  007C CC 00 08            LDD     #&8             ;fila 4
+  007F ED 06               STD     6,x
+
+  0081 CC 00 0C            LDD     #&12            ;fila 5
+  0084 ED 08               STD     8,x
+
+  0086 CC 00 00            LDD     #&0             ;fila 6
+  0089 ED 0A               STD     10,x
+
+  008B CC 00 24            LDD     #&36            ;fila 7
+  008E ED 0C               STD     12,x
+
+  0090 CC 00 00            LDD     #&0             ;fila 8
+  0093 ED 0E               STD     14,x
+  0095 08                  INX
+
+  0096 CC 00 09            LDD     #&9             ;fila 9
+  0099 ED 10               STD     16,x
+  009B 08                  INX
+
+  009C CC 00 16            LDD     #&22            ;fila 10
+  009F ED 12               STD     18,x
+
+  00A1 4F                  CLRA
+  00A2 5F                  CLRB
+
+  00A3 39                  RTS
+
+                   ***************************
+                   END
+
+  Symbol Table 
+
+  DIV                002C
+  CARGAVEC           006A
+  CANT               0014
+  MULTIS             0015
+  VECTOR             0000
+  ESMULTI            005F
+  END                00A4
+  CERO               0054
+  LOOP               0023
+  INC                0036
+  DIVISO             0016
+  INICIO             0048
+  CEROS              0014

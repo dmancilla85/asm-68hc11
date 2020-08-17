@@ -1,0 +1,16 @@
+0001 0000                                            ORG     $0000		; Primer ejemplo
+0002 0000                    contador                rmb     1		; Observar relacion entre
+0003 0001                    resultado               rmb     2		; el tamaño de los operandos
+0004 0003                    op1                     rmb     1		; y el del resultado
+0005 0004                    op2                     rmb     1		; (Hay que cargar valores de prueba)
+0006                         
+0007 8000                                            ORG     $8000		; en el sim11, ver mem 8000
+0008 8000 7f 00 01                                   clr     resultado	; Hresultado=0
+0009 8003 96 03                                      ldaa    op1		; A <- op1
+0010 8005 9b 04                                      adda    op2		; A = A + op2
+0011 8007 97 02                                      staa    resultado+1	; parte baja de resultado=A
+0012 8009 24 03                                      bcc     sale		; Si no hay carry, chau
+0013 800b 7c 00 01                                   inc     resultado	; Else, Hresultado++
+0014                         sale                        
+0015 800e 20 fe                                      bra     sale		; se fini
+0016                                                 

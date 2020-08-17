@@ -1,0 +1,26 @@
+  ADDR B1 B2 B3 B4 C:\Proyectos\assembler\testLed.asm               PAGE       1
+
+
+
+                           ORG $000
+
+  0000 B6 10 00    start   LDAA    $1000   ; Cargo en acum. A el puerto A
+  0003 88 78               EORA    #$78    ; PA5 + PA6 + PA4 + PA3
+  0005 B7 10 00            STAA    $1000   ; Cambia de estado los bits PA6, PA5,
+.                  PA4 y PA3 de puerto A
+
+
+  0008 18 CE 0A FF         LDY #$AFF       ; Tiempo
+
+  000C 18 09       dec     DEY             ; Decremento Y
+  000E 18 8C 00 00         CPY #0          ; Y es igual a 0?
+  0012 26 F8               BNE dec         ; si no es 0 decrementa otra vez
+
+  0014 20 EA               BRA start       ; vuelve a empezar...
+
+                           END
+
+  Symbol Table 
+
+  START              0000
+  DEC                000C
